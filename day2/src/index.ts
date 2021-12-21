@@ -4,13 +4,17 @@ import * as path from 'path';
 (() => {
   const position = {
     x: 0,
-    z: 0
+    z: 0,
+    aim: 0
   };
 
   const commands: { [command: string]: (value: number) => void } = {
-    forward: (value: number) => position.x += value,
-    up: (value: number) => position.z -= value,
-    down: (value: number) => position.z += value
+    forward: (value: number) => {
+      position.x += value;
+      position.z += value * position.aim;
+    },
+    down: (value: number) => position.aim += value,
+    up: (value: number) => position.aim -= value,
   };
 
   fs
@@ -26,7 +30,7 @@ import * as path from 'path';
 
   console.log(`
     Position: ${JSON.stringify(position)}
-    Multiplied: ${Object.values(position).reduce((a, b) => a*b, 1)}`);
+    Multiplied: ${position.x*position.z}`);
 
 
 })();
